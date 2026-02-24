@@ -1,8 +1,8 @@
 const Booking = require('../models/Booking')
 const Dentist = require('../models/Dentist');
 
-//@desc     Get all hospitals 
-//@route    GET /api/v1/hospitals
+//@desc     Get all dentists 
+//@route    GET /dentists
 //@access   Public
 exports.getDentists = async (req, res, next) => {
     let query;
