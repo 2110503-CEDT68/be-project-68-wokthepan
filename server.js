@@ -3,6 +3,10 @@ const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
 
+const { setServers } = require("node:dns/promises");
+
+setServers(["1.1.1.1", "8.8.8.8"]);
+
 // Load env variables
 dotenv.config({ path: './config/config.env' });
 
