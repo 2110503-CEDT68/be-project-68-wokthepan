@@ -4,7 +4,7 @@ const Dentist = require('../models/Dentist');
 //@desc     Get all hospitals 
 //@route    GET /api/v1/hospitals
 //@access   Public
-exports.getHospitals = async (req, res, next) => {
+exports.getDentists = async (req, res, next) => {
     let query;
 
     // Copy req.query and extract to array of key value
@@ -21,7 +21,7 @@ exports.getHospitals = async (req, res, next) => {
     queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
     console.log(queryStr);
 
-    query = Hospital.find(JSON.parse(queryStr)).populate('appointments');
+    query = Dentist.find(JSON.parse(queryStr)).populate('bookings');
 
     // Select fields
     if (req.query.select) {
@@ -44,10 +44,10 @@ exports.getHospitals = async (req, res, next) => {
     const endIndex = page * limit;
 
     try {
-        const total = await Hospital.countDocuments();
+        const total = await Dentist.countDocuments();
         query = query.skip(startIndex).limit(limit);
         // Execute query
-        const hospitals = await query;
+        const dentists = await query;
 
         // Pagination result
         const pagination = {};
@@ -67,8 +67,8 @@ exports.getHospitals = async (req, res, next) => {
         }
         res.status(200).json({
             success:true, 
-            count: hospitals.length,
-            data: hospitals
+            count: dentists.length,
+            data: dentists
         });
     } catch(err) {
         console.log(err.stack);
@@ -79,11 +79,11 @@ exports.getHospitals = async (req, res, next) => {
 //@desc     Get a hospital 
 //@route    GET /api/v1/hospitals/:id
 //@access   Public
-exports.getHospital = async (req, res, next) => {
+exports.getDentist = async (req, res, next) => {
     try {
-        const hospital = await Hospital.findById(req.params.id);
+        const dentist = await Dentist.findById(req.params.id);
 
-        if (!hospital) {
+        if (!dentist) {
             return res.status(400).json({success: false});
         }
         res.status(200).json({success:true, data: hospital});
@@ -96,28 +96,28 @@ exports.getHospital = async (req, res, next) => {
 //@desc     Create a new hospital 
 //@route    POST /api/v1/hospitals
 //@access   Private
-exports.createHospital = async (req, res, next) => {
-    const hospital = await Hospital.create(req.body);
+exports.createDentist = async (req, res, next) => {
+    const dentist = await Dentist.create(req.body);
     res.status(201).json({
         success: true,
-        data: hospital
+        data: dentist
     });
 };
 
 //@desc     Update a hospital 
 //@route    PUT /api/v1/hospitals/:id
 //@access   Private
-exports.updateHospital = async (req, res, next) => { 
+exports.updateDentist = async (req, res, next) => { 
     try {
-        const hospital = await Hospital.findByIdAndUpdate(req.params.id, req.body, {
+        const dentist = await Dentist.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
             runValidators: true
         });
 
-        if (!hospital) {
+        if (!dentist) {
             return res.status(400).json({success: false});
         }
-        res.status(200).json({success:true, data: hospital});
+        res.status(200).json({success:true, data: dentist});
     } catch(err) {
         console.log(err.stack);
         res.status(400).json({success: false});
@@ -128,18 +128,18 @@ exports.updateHospital = async (req, res, next) => {
 //@desc     Delete a hospital 
 //@route    DELETE /api/v1/hospitals/:id
 //@access   Private
-exports.deleteHospital = async (req, res, next) => {
+exports.deleteDentist = async (req, res, next) => {
     try {
-        const hospital = await Hospital.findById(req.params.id);
+        const dentist = await Dentist.findById(req.params.id);
 
-        if (!hospital) {
+        if (!dentist) {
             res.status(400).json({
                 success: false,
-                message: `Hospital not found with id of ${req.params.id}`
+                message: `Dentist not found with id of ${req.params.id}`
             });
         }
-        await Appointment.deleteMany({hospital: req.params.id});
-        await Hospital.deleteOne({_id: req.params.id});
+        await Booking.deleteMany({dentist: req.params.id});
+        await Dentist.deleteOne({_id: req.params.id});
 
         res.status(200).json({success:true, data: {}});
     } catch(err) {

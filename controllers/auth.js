@@ -10,6 +10,7 @@ exports.register = async (req, res, next) => {
         // Create user
         const user = await User.create({
             name,
+            telephone,
             email,
             tel,
             password,
