@@ -81,12 +81,12 @@ exports.getDentists = async (req, res, next) => {
 //@access   Public
 exports.getDentist = async (req, res, next) => {
     try {
-        const dentist = await Dentist.findById(req.params.id);
+        const dentist = await Dentist.findById(req.params.id).populate('bookings');
 
         if (!dentist) {
             return res.status(400).json({success: false});
         }
-        res.status(200).json({success:true, data: hospital});
+        res.status(200).json({success:true, data: dentist});
     } catch(err) {
         console.log(err.stack);
         res.status(400).json({success: false});

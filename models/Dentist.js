@@ -19,6 +19,17 @@ const DentistSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
+}, {
+
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+});
+
+DentistSchema.virtual('bookings', {
+    ref: 'Booking',        
+    localField: '_id',     
+    foreignField: 'dentist', 
+    justOne: false         
 });
 
 module.exports = mongoose.model('Dentist', DentistSchema)

@@ -1,7 +1,7 @@
 const User = require('../models/User');
 
 //@desc     Register user
-//@route    POST /api/v1/auth/register
+//@route    POST /auth/register
 //@access   Public
 exports.register = async (req, res, next) => {
     try {
@@ -28,7 +28,7 @@ exports.register = async (req, res, next) => {
 };
 
 //@desc     Login user
-//@route    POST /api/v1/auth/login
+//@route    POST /auth/login
 //access    Public
 exports.login = async (req, res, next) => {
     const {email, password} = req.body;
@@ -83,7 +83,7 @@ const sendTokenResponse = (user, statusCode, res) => {
 }
 
 //@desc      Get current Logged in user
-//@route     GET /api/v1/auth/me
+//@route     GET /auth/me
 //@access    Private
 exports.getMe = async (req, res, next) => {
     const user = await User.findById(req.user.id);

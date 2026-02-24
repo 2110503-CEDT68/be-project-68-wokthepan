@@ -10,19 +10,19 @@ exports.getBookings = async (req, res, next) => {
     // Users can only see their bookings!
     if (req.user.role !== 'admin') {
         query = Booking.find({user: req.user.id}).populate({
-            path: 'Dentist',
+            path: 'dentist',
             select: 'name yearsOfExperience areaOfExpertise'
         });
     } else { // Admin can see all
         if (req.params.dentistId) {
             console.log(req.params.dentistId);
             query = Booking.find({ dentist: req.params.dentistId }).populate({
-                path: "Dentist",
+                path: "dentist",
                 select: "name yearsOfExperience areaOfExpertise",
             });
         } else {
             query = Booking.find().populate({
-                path: 'Dentist',
+                path: 'dentist',
                 select: 'name yearsOfExperience areaOfExpertise'
             });
         }
@@ -50,7 +50,7 @@ exports.getBookings = async (req, res, next) => {
 //@access   Public
 exports.getBooking = async (req, res, next) => {
     let query= Booking.findById(req.params.id).populate({
-        path: 'Dentist',
+        path: 'dentist',
         select: 'name yearsOfExperience areaOfExpertise'
     });
 
