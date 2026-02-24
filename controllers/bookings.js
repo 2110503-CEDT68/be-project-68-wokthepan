@@ -100,7 +100,7 @@ exports.addBooking = async (req, res, next) => {
         if(existedBooking.length > 0 && req.user.role !== 'admin') {
             return res.status(400).json({
                 success: false,
-                message: `User ${req.user.id} has already booked an appointment with the dentist ${req.params.dentistId} at the date ${req.body.bookDate}`
+                message: `User ${req.user.name} has already booked an appointment with the dentist ${dentist.name} at the date ${req.body.bookDate}`
             });
         }
         
