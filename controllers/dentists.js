@@ -76,8 +76,8 @@ exports.getDentists = async (req, res, next) => {
     }
 };
 
-//@desc     Get a hospital 
-//@route    GET /api/v1/hospitals/:id
+//@desc     Get a dentist
+//@route    GET /dentists/:id
 //@access   Public
 exports.getDentist = async (req, res, next) => {
     try {
@@ -93,8 +93,8 @@ exports.getDentist = async (req, res, next) => {
     }
 };
 
-//@desc     Create a new hospital 
-//@route    POST /api/v1/hospitals
+//@desc     Create a new dentist
+//@route    POST /dentists
 //@access   Private
 exports.createDentist = async (req, res, next) => {
     const dentist = await Dentist.create(req.body);
@@ -104,8 +104,8 @@ exports.createDentist = async (req, res, next) => {
     });
 };
 
-//@desc     Update a hospital 
-//@route    PUT /api/v1/hospitals/:id
+//@desc     Update a dentist
+//@route    PUT /dentists/:id
 //@access   Private
 exports.updateDentist = async (req, res, next) => { 
     try {
@@ -125,8 +125,8 @@ exports.updateDentist = async (req, res, next) => {
     
 };
 
-//@desc     Delete a hospital 
-//@route    DELETE /api/v1/hospitals/:id
+//@desc     Delete a dentist
+//@route    DELETE /dentists/:id
 //@access   Private
 exports.deleteDentist = async (req, res, next) => {
     try {

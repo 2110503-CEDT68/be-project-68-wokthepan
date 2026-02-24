@@ -2,7 +2,7 @@ const Booking = require('../models/Booking');
 const Dentist = require('../models/Dentist');
 
 //@desc     Get all bookings
-//@route    GET /api/v1/bookings
+//@route    GET /bookings
 //@access   Public
 exports.getBookings = async (req, res, next) => {
     let query;
@@ -46,7 +46,7 @@ exports.getBookings = async (req, res, next) => {
 };
 
 //@desc     Get single booking
-//@route    GET /api/v1/bookings/:id
+//@route    GET /bookings/:id
 //@access   Public
 exports.getBooking = async (req, res, next) => {
     let query= Booking.findById(req.params.id).populate({
@@ -78,7 +78,7 @@ exports.getBooking = async (req, res, next) => {
 };
 
 //@desc     Add single booking
-//@route    POST /api/v1/dentists/:dentistId/bookings/
+//@route    POST /dentists/:dentistId/bookings/
 //@access   Private
 exports.addBooking = async (req, res, next) => {
     try {
@@ -120,7 +120,7 @@ exports.addBooking = async (req, res, next) => {
 };
 
 //@desc     Update booking
-//@route    PUT /api/v1/bookings/:id
+//@route    PUT /bookings/:id
 //@access   Private
 exports.updateBooking = async (req, res, next) => {
     try {
@@ -159,7 +159,7 @@ exports.updateBooking = async (req, res, next) => {
 };
 
 //@desc     Delete booking
-//@route    DELETE /api/v1/bookings/:id
+//@route    DELETE /bookings/:id
 //@access   Private
 exports.deleteBooking = async (req, res, next) => {
     try {
