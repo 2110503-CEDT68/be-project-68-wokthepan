@@ -1,5 +1,5 @@
 const Booking = require('../models/Booking');
-const dentist = require('../models/Dentist');
+const Dentist = require('../models/Dentist');
 
 //@desc     Get all bookings
 //@route    GET /api/v1/bookings
@@ -10,19 +10,19 @@ exports.getBookings = async (req, res, next) => {
     // Users can only see their bookings!
     if (req.user.role !== 'admin') {
         query = Booking.find({user: req.user.id}).populate({
-            path: 'dentist',
+            path: 'Dentist',
             select: 'name yearsOfExperience areaOfExpertise'
         });
     } else { // Admin can see all
         if (req.params.dentistId) {
             console.log(req.params.dentistId);
             query = Booking.find({ dentist: req.params.dentistId }).populate({
-                path: "dentist",
+                path: "Dentist",
                 select: "name yearsOfExperience areaOfExpertise",
             });
         } else {
             query = Booking.find().populate({
-                path: 'dentist',
+                path: 'Dentist',
                 select: 'name yearsOfExperience areaOfExpertise'
             });
         }
@@ -50,7 +50,7 @@ exports.getBookings = async (req, res, next) => {
 //@access   Public
 exports.getBooking = async (req, res, next) => {
     let query= Booking.findById(req.params.id).populate({
-        path: 'dentist',
+        path: 'Dentist',
         select: 'name yearsOfExperience areaOfExpertise'
     });
 
@@ -84,7 +84,7 @@ exports.addBooking = async (req, res, next) => {
     try {
         req.body.dentist = req.params.dentistId;
 
-        const dentist = await dentist.findById(req.params.dentistId);
+        const dentist = await Dentist.findById(req.params.dentistId);
 
         if (!dentist) {
              return res.status(404).json({
@@ -96,7 +96,7 @@ exports.addBooking = async (req, res, next) => {
         // Add user id to req body
         req.body.user = req.user.id;
         // Check exited booking of the user
-        const existedBooking = await Booking.find({user: req.user.id, dentist: req.params.dentistId,bookDate: req.body.bookDate});
+        const existedBooking = await Booking.find({user: req.user.id, dentist: req.params.dentistId, bookDate: req.body.bookDate});
         if(existedBooking.length > 0 && req.user.role !== 'admin') {
             return res.status(400).json({
                 success: false,
