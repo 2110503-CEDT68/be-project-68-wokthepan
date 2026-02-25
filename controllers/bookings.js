@@ -95,15 +95,23 @@ exports.addBooking = async (req, res, next) => {
 
         // Add user id to req body
         req.body.user = req.user.id;
-        // Check exited booking of the user
-        const existedBooking = await Booking.find({user: req.user.id, dentist: req.params.dentistId, bookDate: req.body.bookDate});
-        if(existedBooking.length > 0 && req.user.role !== 'admin') {
+
+        const existedBooking = await Booking.find({user: req.user.id});
+        if (existedBooking.length >= 1 && req.user.role !== 'admin') {
             return res.status(400).json({
                 success: false,
-                message: `User ${req.user.name} has already booked an appointment with the dentist ${dentist.name} at the date ${req.body.bookDate}`
+                message: `The user with ID ${req.user.id} has already made 1 booking`
             });
         }
-        
+
+        // Check if dentist have appointment with other user
+        const dentistSchedule = await Booking.find({ dentist: req.params.dentistId, bookDate: req.body.bookDate });
+        if (dentistSchedule.length > 0) {
+            return res.status(400).json({
+                success: false,
+                message: `The dentist ${dentist.name} is already booked on ${req.body.bookDate}. Please choose other.`
+            });
+        }
 
         const booking = await Booking.create(req.body);
         res.status(201).json({
